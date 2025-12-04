@@ -1,8 +1,35 @@
+import Footer from "./Components/Footer/Footer";
+import Header from "./Components/Header/Header";
+import Todo from "./Components/Todo/Todo";
+import AddTodoModal from "./Components/AddTodoModal/AddTodoModal.css/AddTodoModal";
 import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = ({ title, description, isImportant }) => {
+    // validation
+
+    const newTodo = {
+      id: crypto.randomUUID(),
+      title,
+      description,
+      isImportant,
+      isComplete: false,
+    };
+
+    setTodos([...todos, newTodo]);
+
+    setIsAddModalOpen(false);
+  };
+
   return (
     <>
+      <Header />
+
       <main className="container pb-25">
         <div id="headline" className="space-y-3">
           <h1 className="title">
@@ -45,7 +72,7 @@ function App() {
               </div>
             </div>
 
-            <button id="open-dialog" cla>
+            <button id="open-dialog" onClick={() => setIsAddModalOpen(true)}>
               <span> ایجاد جدید </span>
               <div className="btn-divider"></div>
               <span>
@@ -58,7 +85,9 @@ function App() {
         <section id="tasks" className="space-y-30 mt-5">
           <div className="space-y-5">
             <p className="text-sm">تسک های موجود:</p>
-            <Todo />
+            {todos.map((todo) => (
+              <Todo key={todo.id} {...todo} />
+            ))}
           </div>
           <div className="space-y-5">
             <p className="text-sm">تسک‌های تکمیل‌شده</p>
@@ -66,6 +95,15 @@ function App() {
           </div>
         </section>
       </main>
+
+      {isAddModalOpen && (
+        <AddTodoModal
+          onClose={() => setIsAddModalOpen(false)}
+          addTodoHandler={addTodo}
+        />
+      )}
+
+      <Footer />
     </>
   );
 }
