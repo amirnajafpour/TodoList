@@ -42,7 +42,7 @@ function AddTodoModal({ onClose, addTodoHandler }) {
               id="is-important"
               type="checkbox"
             />
-            <label for="is-important"> مهم </label>
+            <label htmlFor="is-important"> مهم </label>
           </div>
           <div className="info-message">
             <p className="inline-flex! items-center gap-1">
