@@ -8,8 +8,8 @@ import "./App.css";
 
 function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-
   const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState("all");
 
   const addTodo = ({ title, description, isImportant }) => {
     // validation
@@ -47,6 +47,15 @@ function App() {
     setTodos(updatedTodos);
   };
 
+  const filteredTodos = () => {
+    if (filter === "all") return todos;
+
+    if (filter === "completed") return todos.filter((todo) => todo.isCompleted);
+
+    if (filter === "not-completed")
+      return todos.filter((todo) => !todo.isCompleted);
+  };
+
   return (
     <>
       <Header />
@@ -71,7 +80,15 @@ function App() {
               <input id="dd-toggle" type="checkbox" hidden />
 
               <label className="dd-btn" htmlFor="dd-toggle">
-                <span>نمایش فقط</span>
+                <span>
+                  نمایش{" "}
+                  {filter === "all"
+                    ? "همه"
+                    : filter === "completed"
+                    ? "تکمیل شده‌ها"
+                    : "تکمیل نشده‌ها"}
+                </span>
+
                 <i className="fa-solid fa-chevron-down"></i>
               </label>
 
@@ -80,13 +97,25 @@ function App() {
                   <p className="text-start text-xs opacity-60">نمایش فقط</p>
                 </div>
                 <div className="py-1">
-                  <label htmlFor="dd-toggle" className="menu-item">
+                  <label
+                    htmlFor="dd-toggle"
+                    className="menu-item"
+                    onClick={() => setFilter("all")}
+                  >
                     همه
                   </label>
-                  <label htmlFor="dd-toggle" className="menu-item">
+                  <label
+                    htmlFor="dd-toggle"
+                    className="menu-item"
+                    onClick={() => setFilter("completed")}
+                  >
                     تکمیل شده ها
                   </label>
-                  <label htmlFor="dd-toggle" className="menu-item">
+                  <label
+                    htmlFor="dd-toggle"
+                    className="menu-item"
+                    onClick={() => setFilter("not-completed")}
+                  >
                     در انتظار انجام
                   </label>
                 </div>
@@ -112,7 +141,7 @@ function App() {
           <section id="tasks" className="space-y-30 mt-5">
             <div className="space-y-5">
               <p className="text-sm">تسک های موجود:</p>
-              {todos.map((todo) => (
+              {filteredTodos().map((todo) => (
                 <Todo
                   key={todo.id}
                   {...todo}
