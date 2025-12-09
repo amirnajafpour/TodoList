@@ -2,7 +2,7 @@ import Footer from "./Components/Footer/Footer";
 import Header from "./Components/Header/Header";
 import Todo from "./Components/Todo/Todo";
 import AddTodoModal from "./Components/AddTodoModal/AddTodoModal";
-import { useState } from "react";
+import { useId, useState } from "react";
 import NoTodo from "./Components/NoTodo/NoTodo";
 import "./App.css";
 
@@ -10,6 +10,8 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState("all");
+
+  const id = useId();
 
   const addTodo = ({ title, description, isImportant }) => {
     // validation
@@ -77,9 +79,9 @@ function App() {
           <div></div>
           <div className="flex items-center gap-2">
             <div className="dropdown">
-              <input id="dd-toggle" type="checkbox" hidden />
+              <input id={id} type="checkbox" hidden />
 
-              <label className="dd-btn" htmlFor="dd-toggle">
+              <label className="dd-btn" htmlFor={id}>
                 <span>
                   نمایش{" "}
                   {filter === "all"
@@ -98,21 +100,21 @@ function App() {
                 </div>
                 <div className="py-1">
                   <label
-                    htmlFor="dd-toggle"
+                    htmlFor={id}
                     className="menu-item"
                     onClick={() => setFilter("all")}
                   >
                     همه
                   </label>
                   <label
-                    htmlFor="dd-toggle"
+                    htmlFor={id}
                     className="menu-item"
                     onClick={() => setFilter("completed")}
                   >
                     تکمیل شده ها
                   </label>
                   <label
-                    htmlFor="dd-toggle"
+                    htmlFor={id}
                     className="menu-item"
                     onClick={() => setFilter("not-completed")}
                   >
